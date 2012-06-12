@@ -18,7 +18,7 @@
 <!--      <item>crypt</item>-->
 <!--      <item>crypto</item>-->
 <!--      <item>ssl</item>-->
-      <item>pq</item>
+<!--      <item>pq</item> -->
       <item>qgis_core</item>
       <item>qgis_gui</item>
       <item>qgissqlanyconnection</item>
