@@ -19,12 +19,12 @@
 <!--      <item>crypto</item>-->
 <!--      <item>ssl</item>-->
 <!--      <item>pq</item> -->
+      <item>sqlite3</item>
+      <item>spatialite</item>
       <item>qgis_core</item>
       <item>qgis_gui</item>
       <item>qgissqlanyconnection</item>
       <item>qgis_analysis</item>
-      <item>sqlite3</item>
-      <item>spatialite</item>
 <!--      <item>ffi</item>-->
 <!--      <item>bz</item>-->
 <!--      <item>python2.6</item>-->
@@ -40,7 +40,7 @@
 <!--Can't load 'gsl' E/Qt JAVA ( 5936): java.lang.UnsatisfiedLinkError: Cannot load library: reloc_library[1315]:    88 cannot locate 'cblas_ctrmv'...-->
       <item>gdal</item>
       <item>proj</item>
-<!--      <item>spatialindex</item>-->
+      <item>spatialindex</item>
 <!--      <item>spatialindex_c</item>-->
       <item>qwt</item>
       <item>iconv</item>
@@ -48,12 +48,12 @@
 <!--      <item>crypto</item>-->
 <!--      <item>ssl</item>-->
 <!--      <item>pq</item> -->
+      <item>sqlite3</item>
+      <item>spatialite</item>
       <item>qgis_core</item>
       <item>qgissqlanyconnection</item>
       <item>qgis_analysis</item>
       <item>qgis_gui</item>
-      <item>spatialite</item>
-      <item>sqlite3</item>
     </array>
     <array name="qt_libs">
       <item>QtCore</item>
