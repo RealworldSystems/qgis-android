@@ -23,7 +23,7 @@
       <item>qgis_gui</item>
       <item>qgissqlanyconnection</item>
       <item>qgis_analysis</item>
-      <item>sqlite</item>
+      <item>sqlite3</item>
       <item>spatialite</item>
 <!--      <item>ffi</item>-->
 <!--      <item>bz</item>-->
@@ -53,6 +53,7 @@
       <item>qgis_analysis</item>
       <item>qgis_gui</item>
       <item>spatialite</item>
+      <item>sqlite3</item>
     </array>
     <array name="qt_libs">
       <item>QtCore</item>
