@@ -68,6 +68,7 @@
       <item>QtSystemInfo</item>
       <item>QtSensors</item>
       <item>QtDeclarative</item>
+      <item>QtMobility</item>
     </array>
     <array name="qt_libs_mobile">
       <item>QtCore</item>
@@ -80,5 +81,6 @@
       <item>QtSystemInfo</item>
       <item>QtSensors</item>
       <item>QtDeclarative</item>
+      <item>QtMobility</item>
     </array>
 </resources>
