@@ -1,0 +1,25 @@
+From bb5aa816cbcde0beb30b77d6a7526ccf79dac8b8 Mon Sep 17 00:00:00 2001
+From: Sjoerd van Leent <svanleent@gmail.com>
+Date: Wed, 20 Jun 2012 12:48:10 +0200
+Subject: [PATCH] Should use CallLongMethod
+
+---
+ src/location/jni_android.cpp |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/location/jni_android.cpp b/src/location/jni_android.cpp
+index 84166bf..788fbef 100644
+--- a/src/location/jni_android.cpp
++++ b/src/location/jni_android.cpp
+@@ -166,7 +166,7 @@ namespace QtLocationJni
+     qint64 getSupportedPositioningMethods (JNIEnv* env)
+     {
+ 
+-        qint64 retPositionMethod= env->CallIntMethod(qtLocationJni.m_locationObject (),
++        qint64 retPositionMethod= env->CallLongMethod(qtLocationJni.m_locationObject (),
+                                                      qtLocationJni.m_getsupportedPositioningMethodsID);
+         return retPositionMethod;
+     }
+-- 
+1.7.5.4
+
