@@ -22,11 +22,11 @@
       <item>sqlite3</item>
       <item>freexl</item>
       <item>spatialite</item>
+      <item>QtLocation</item>
       <item>qgis_core</item>
       <item>qgis_gui</item>
       <item>qgissqlanyconnection</item>
       <item>qgis_analysis</item>
-      <item>QtLocation</item>
 <!--      <item>ffi</item>-->
 <!--      <item>bz</item>-->
 <!--      <item>python2.6</item>-->
@@ -53,11 +53,11 @@
       <item>sqlite3</item>
       <item>freexl</item>
       <item>spatialite</item>
+      <item>QtLocation</item>
       <item>qgis_core</item>
       <item>qgissqlanyconnection</item>
       <item>qgis_analysis</item>
       <item>qgis_gui</item>
-      <item>QtLocation</item>
     </array>
     <array name="qt_libs">
       <item>QtCore</item>
