@@ -21,7 +21,6 @@
 <!--      <item>pq</item> -->
       <item>sqlite3</item>
       <item>freexl</item>
-      <item>expat</item>
       <item>spatialite</item>
       <item>qgis_core</item>
       <item>qgis_gui</item>
@@ -52,7 +51,6 @@
 <!--      <item>pq</item> -->
       <item>sqlite3</item>
       <item>freexl</item>
-      <item>expat</item>
       <item>spatialite</item>
       <item>qgis_core</item>
       <item>qgissqlanyconnection</item>
