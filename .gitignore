@@ -10,3 +10,4 @@
 /*apk/Makefile
 /*apk/assets
 /scripts/config.conf
+**/*.class
