@@ -116,7 +116,7 @@ public class Reader {
     /**
      * Returns the ELFHeader object
      *
-     * @return This will get the ELFHeader from the elfObject File
+     * @return This will get the ELFHeader from the ELF Object
      */
     public ELFHeader getELFHeader() throws ReaderException {
 	// Cache: Return cached elfHeader if present
@@ -187,44 +187,47 @@ public class Reader {
 	return this.elfHeader;
     }
 
-    private ProgramHeader.Entry.Dynamic readDynamic(int offset, int size) throws Exception {
+    private Dynamic readDynamic(int offset, int size) throws Exception {
 	    FileInputStream fis = new FileInputStream(elfObject);
 	    fis.skip(offset);
 	    
-	    ProgramHeader.Entry.Dynamic.DT[] dtlist = new ProgramHeader.Entry.Dynamic.DT[size / 8];
+	    Dynamic.DT[] dtlist = new Dynamic.DT[size / 8];
 	    
-	    for(int i = offset; i < (offset + size); i += 8) {
 
-		int tag = readInteger(fis);
-		int un = readInteger(fis);
+	    {
+		int j = 0;
 
-		ProgramHeader.Entry.Dynamic.DT dt = new ProgramHeader.Entry.Dynamic.DT();
-		dt.tag = tag;
+		for(int i = offset; i < (offset + size); i += 8) {
+		    int tag = readInteger(fis);
+		    int un = readInteger(fis);
+
+		    Dynamic.DT dt = new Dynamic.DT();
+		    dt.tag = tag;
 		
-		if((dt.tag >= 3 && dt.tag <= 7) ||
-		   (dt.tag >= 12 && dt.tag <= 13) ||
-		   dt.tag == 17 || dt.tag == 21 || dt.tag == 23) {
-		    dt.ptr =  un; dt.val = 0;
-		} else if(dt.tag == 0 || dt.tag == 16 || 
-			  dt.tag == 22 || dt.tag > 23) {
-		    dt.ptr = 0; dt.val = 0;
-		} else {
-		    dt.ptr = 0; dt.val = un;
+		    if((dt.tag >= 3 && dt.tag <= 7) ||
+		       (dt.tag >= 12 && dt.tag <= 13) ||
+		       dt.tag == 17 || dt.tag == 21 || dt.tag == 23) {
+			dt.ptr =  un;
+		    } else if(!(dt.tag == 0 || dt.tag == 16 || 
+				dt.tag == 22 || dt.tag > 23)) {
+			dt.val = un;
+		    }
+		
+		    dtlist[j] = dt;
+		    j++;
 		}
-		
-		
-		dtlist[(i - offset) /8] = dt;
 	    }
+	    
 	    fis.close();
 	    
-	    ProgramHeader.Entry.Dynamic d = new ProgramHeader.Entry.Dynamic();
+	    Dynamic d = new Dynamic();
 	    d.dtList = dtlist;
 
 	    // Read the STRTAB
 	    
 	    int strtabOffset = 0;
 	    for(int i = 0; i < d.dtList.length; i++) { // Fin dstrtab
-		if(d.dtList[i].getTag() == ProgramHeader.Entry.Dynamic.DT.Tag.STRTAB)
+		if(d.dtList[i].getTag() == Dynamic.DT.Tag.STRTAB)
 		    {
 			strtabOffset = d.dtList[i].getPtr();
 			break;
@@ -232,11 +235,11 @@ public class Reader {
 	    }
 
 	    for(int i = 0; i < d.dtList.length; i++) {
-		ProgramHeader.Entry.Dynamic.DT dt = d.dtList[i];
+		Dynamic.DT dt = d.dtList[i];
 		int tag = dt.getTag();
-		if(tag == ProgramHeader.Entry.Dynamic.DT.Tag.NEEDED ||
-		   tag == ProgramHeader.Entry.Dynamic.DT.Tag.RPATH ||
-		   tag == ProgramHeader.Entry.Dynamic.DT.Tag.SONAME) {
+		if(tag == Dynamic.DT.Tag.NEEDED ||
+		   tag == Dynamic.DT.Tag.RPATH ||
+		   tag == Dynamic.DT.Tag.SONAME) {
 		    
 		    FileInputStream fisStrTab = new FileInputStream(elfObject);
 		    fisStrTab.skip(strtabOffset);
@@ -305,7 +308,7 @@ public class Reader {
     /**
      * Returns the ProgramHeader object
      *
-     * @return This will get the ProgramHeader from the elfObject File
+     * @return This will get the ProgramHeader from the ELF Object
      */
     public ProgramHeader getProgramHeader() throws ReaderException {
 	// Cache: If the program header is present, return it
@@ -325,6 +328,33 @@ public class Reader {
 	    
 	this.programHeader = new ProgramHeader(entries);
 	return this.programHeader;
+    }
+
+    /**
+     * Gets all the library dependencies
+     *
+     * Looks in all DYNAMIC program header segments and returns the different
+     * libraries where this object depents upon.
+     */
+    public String[] getLibraryDependencies() throws ReaderException {
+	
+	ArrayList<String>	list   = new ArrayList<String>();
+	ProgramHeader		header = this.getProgramHeader();
+	
+	for(int i = 0; i < header.size(); i++) {
+	    ProgramHeader.Entry entry = header.getEntry(i);
+	    if(entry.type == ProgramHeader.Entry.Type.DYNAMIC) {
+		for(int j = 0; j < entry.getDynamic().size(); j++) {
+		    Dynamic.DT dt = entry.getDynamic().getDT(j);
+		    if(dt.tag == Dynamic.DT.Tag.NEEDED) {
+			list.add(dt.getName());
+		    }
+		}		
+	    }
+	}
+	
+	String[] array = new String[list.size()];
+	return list.toArray(array);
     }
     
 }

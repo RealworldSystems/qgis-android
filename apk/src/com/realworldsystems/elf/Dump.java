@@ -55,18 +55,25 @@ public class Dump {
 	    
 	    if(e.getType() == ProgramHeader.Entry.Type.DYNAMIC) {
 		System.out.println("-- Dynamic Header Information:");
-		ProgramHeader.Entry.Dynamic.DT[] dtList = e.getDynamic().getDTList();
+		Dynamic.DT[] dtList = e.getDynamic().getDTList();
 		for(int j = 0; j < dtList.length; j++) {
 		    int tag = dtList[j].getTag();
 		    System.out.printf("--== Dynamic Tag: %s\n", dtList[j].getTagName());
-		    if(tag == ProgramHeader.Entry.Dynamic.DT.Tag.NEEDED ||
-		       tag == ProgramHeader.Entry.Dynamic.DT.Tag.RPATH ||
-		       tag == ProgramHeader.Entry.Dynamic.DT.Tag.SONAME) {
+		    if(tag == Dynamic.DT.Tag.NEEDED ||
+		       tag == Dynamic.DT.Tag.RPATH ||
+		       tag == Dynamic.DT.Tag.SONAME) {
 			System.out.printf("--== Dynamic Name: %s\n", dtList[j].getName());
 		    }
 		}
 	    }
 
+	}
+    }
+
+    public static void dumpDependencies(String[] list) {
+	    System.out.println("All library dependencies:");
+	for(int i = 0; i < list.length; i++) {
+	    System.out.printf("-- %s\n", list[i]);
 	}
     }
 
@@ -77,6 +84,7 @@ public class Dump {
 	    
 	    dumpHeader(r.getELFHeader());
 	    dumpProgramHeader(r.getProgramHeader());
+	    dumpDependencies(r.getLibraryDependencies());
 	}
 	
     }
