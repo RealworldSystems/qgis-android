@@ -58,11 +58,12 @@ public class Finder {
 	knownSystemLibraries.add("libstdc++.so");
     }
 
+    private ArrayList<String> currentSystemLibraries = new ArrayList<String>();
+
     /**
      * An empty protected finder constructor for overloading classes
      */
-    protected Finder() {};
-
+    protected Finder()  {};
 
     /**
      * Constructs a new finder object
@@ -72,7 +73,11 @@ public class Finder {
      *
      * @throws FinderException if the path or the elf object can not be found
      */
-    public Finder(String path, String elfObject) throws FinderException {
+    public Finder(String path, String elfObject, ArrayList<String> systemLibraries) 
+	throws FinderException {
+	if(systemLibraries != null) {
+	    this.currentSystemLibraries = systemLibraries;
+	}
 	try {
 	    if(path == null) { throw new NullPointerException("Path is null"); }
 
@@ -100,7 +105,14 @@ public class Finder {
      *
      * If a cyclical dependency is discovered, the method with throw an exception
      */
-    String[] getOrderedDependencies(Finder[] parents) throws FinderException {
+    String[] getOrderedDependencies(Finder[] parents) 
+	throws FinderException {
+	if(currentSystemLibraries != null) {
+	    if(this.currentSystemLibraries.isEmpty()) {
+		currentSystemLibraries.addAll(Finder.knownSystemLibraries);
+	    }
+	}
+
 	String[] currentDeps = null;
 	Finder[] newParents = null;
 	if(parents != null) {
@@ -142,8 +154,9 @@ public class Finder {
 		// Figure out the dependencies of this library, if available
 		
 		if(new File(depFullName).exists()) {
-		    Finder f = new Finder(path, depFullName);
-		    String[] dependencies = f.getOrderedDependencies(newParents);
+		    Finder f = new Finder(path, depFullName, currentSystemLibraries);
+		    String[] dependencies = 
+			f.getOrderedDependencies(newParents);
 		    for(int k = 0; k < dependencies.length; k++) {
 			if(!newDeps.contains(dependencies[k])) {
 			    newDeps.add(dependencies[k]);
@@ -151,7 +164,8 @@ public class Finder {
 		    }
 		    if(!newDeps.contains(currentDep)) { newDeps.add(currentDep); }
 		} else {
-		    if(!knownSystemLibraries.contains(currentDep)) {
+		    if(!currentSystemLibraries.contains(currentDep)) {
+			currentSystemLibraries.add(currentDep);
 			System.out.printf("Assume system library: %s\n", currentDep);
 		    }
 		}

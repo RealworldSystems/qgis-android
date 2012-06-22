@@ -57,6 +57,7 @@ public class FinderDir extends Finder {
      */
     public String[] getOrderedDependencies() throws FinderException {
 	try {
+	    ArrayList<String> currentSystemLibraries = new ArrayList<String>();
 	    String[] currentDeps = new File(path).list();
 	    
 	    ArrayList<String> newDeps = new ArrayList<String>();
@@ -72,7 +73,8 @@ public class FinderDir extends Finder {
 		
 		    String depFullName = String.format("%s%s", path, currentDep);
 		    if(new File(depFullName).exists()) {
-			Finder f = new Finder(path, depFullName);
+			Finder f = new Finder(path, depFullName,
+					      currentSystemLibraries);
 			String[] dependencies = f.getOrderedDependencies();
 			for(int k = 0; k < dependencies.length; k++) {
 			    if(!newDeps.contains(dependencies[k])) {
