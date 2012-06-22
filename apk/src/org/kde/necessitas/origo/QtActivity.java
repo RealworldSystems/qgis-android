@@ -149,8 +149,8 @@ public class QtActivity extends Activity
 	    /*
             if ( m_activityInfo.metaData.containsKey("android.app.lib_name") )
                 libs.add(m_activityInfo.metaData.getString("android.app.lib_name"));
-            loaderParams.putStringArrayList(BUNDLED_LIBRARIES_KEY, libs);
 	    */
+            loaderParams.putStringArrayList(BUNDLED_LIBRARIES_KEY, libs);
 
             // load and start QtLoader class
             m_classLoader = new DexClassLoader(loaderParams.getString(DEX_PATH_KEY) // .jar/.apk files
