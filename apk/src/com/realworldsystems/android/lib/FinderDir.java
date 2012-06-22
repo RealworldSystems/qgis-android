@@ -99,7 +99,7 @@ public class FinderDir extends Finder {
      * A test routine for command line scanning
      */
     public static void main(String[] args) throws FinderException {
-	if(args.length != 2) {
+	if(args.length != 1) {
 	    System.err.println("Usage: Finder <Path>");
 	} else {
 	    String[] deps = new FinderDir(args[0]).getOrderedDependencies();
