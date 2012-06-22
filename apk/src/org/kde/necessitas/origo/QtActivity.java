@@ -138,13 +138,19 @@ public class QtActivity extends Activity
 								      dataDir, 
 								      File.separatorChar,
 								      "lib"));
-		libs.addAll(fd.getOrderedDependencies());
+		String[]        deps    = fd.getOrderedDependencies();
+		
+		for(String dep:deps) {
+		    // String lib... and ...so
+		    libs.add(dep.substring(3, dep.length-3));
+		}
 	    }
 	    
-
+	    /*
             if ( m_activityInfo.metaData.containsKey("android.app.lib_name") )
                 libs.add(m_activityInfo.metaData.getString("android.app.lib_name"));
             loaderParams.putStringArrayList(BUNDLED_LIBRARIES_KEY, libs);
+	    */
 
             // load and start QtLoader class
             m_classLoader = new DexClassLoader(loaderParams.getString(DEX_PATH_KEY) // .jar/.apk files
@@ -171,7 +177,7 @@ public class QtActivity extends Activity
             if (m_activityInfo != null && m_activityInfo.metaData.containsKey("android.app.fatal_error_msg")) {
                 errorDialog.setMessage(m_activityInfo.metaData.getString("android.app.fatal_error_msg"));
 	    } else if (e instanceof FinderException) {
-                errorDialog.setMessage(Stirng.format("%s\n%s", "Fatal error: ", e.getMessage()));
+                errorDialog.setMessage(String.format("%s\n%s", "Fatal error: ", e.getMessage()));
 	    } else {
                 errorDialog.setMessage("Fatal error, your application can't be started.");
 	    }
