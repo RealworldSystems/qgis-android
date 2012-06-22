@@ -170,7 +170,7 @@ public class QtActivity extends Activity
             if (m_activityInfo != null && m_activityInfo.metaData.containsKey("android.app.fatal_error_msg")) {
                 errorDialog.setMessage(m_activityInfo.metaData.getString("android.app.fatal_error_msg"));
 	    } else if (e instanceof FinderException) {
-                errorDialog.setMessage(Stirng.format(%s\n%s, "Fatal error: ", e.getMessage()));
+                errorDialog.setMessage(Stirng.format("%s\n%s", "Fatal error: ", e.getMessage()));
 	    } else {
                 errorDialog.setMessage("Fatal error, your application can't be started.");
 	    }
