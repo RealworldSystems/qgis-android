@@ -55,6 +55,7 @@ public class Finder {
 	knownSystemLibraries.add("libdl.so");
 	knownSystemLibraries.add("liblog.so");
 	knownSystemLibraries.add("libz.so");
+	knownSystemLibraries.add("libstdc++.so");
     }
 
     /**

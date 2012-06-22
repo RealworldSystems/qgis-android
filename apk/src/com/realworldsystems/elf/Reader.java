@@ -93,7 +93,6 @@ public class Reader {
      */
     public Reader(String elfPath) throws ReaderException {
 	try {
-	    System.out.printf("Attempting to open %s\n", elfPath);
 	    initialize(new File(elfPath));
 	} catch (NullPointerException ex) {
 	    throw new ReaderException("The elfPath is null", ex);

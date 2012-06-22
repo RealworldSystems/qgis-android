@@ -30,18 +30,6 @@ import java.util.ArrayList;
  */
 public class FinderDir extends Finder {
 
-    private static ArrayList<String> knownSystemLibraries;
-
-    static {
-	knownSystemLibraries = new ArrayList<String>();
-	knownSystemLibraries.add("libc.so");
-	knownSystemLibraries.add("libm.so");
-	knownSystemLibraries.add("libdl.so");
-	knownSystemLibraries.add("liblog.so");
-	knownSystemLibraries.add("libz.so");
-    }
-
-
     /**
      * Constructs a new finder object
      *
@@ -92,10 +80,6 @@ public class FinderDir extends Finder {
 			    }
 			}
 			if(!newDeps.contains(currentDep)) { newDeps.add(currentDep); }
-		    } else {
-			if(!knownSystemLibraries.contains(currentDep)) {
-			    System.out.printf("Assume system library: %s\n", currentDep);
-			}
 		    }
 		}
 	    }
