@@ -147,7 +147,7 @@ public class QtActivity extends Activity
 		    // String lib... and ...so
 		    String	cut	 = dep.substring(3, dep.length()-3);
 		    boolean	dontload = false;
-		    for(String r:rem) { if(r.equals(dep)) { dontload = true; }}
+		    for(String r:rem) { if(r.equals(cut)) { dontload = true; }}
 		    if(!dontload) { libs.add(cut); }
 		}
 	    }
