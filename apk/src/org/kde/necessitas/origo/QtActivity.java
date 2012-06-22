@@ -27,6 +27,9 @@
 
 package org.kde.necessitas.origo;
 
+import com.realworldsystems.android.libs.FinderDir;
+
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -121,10 +124,22 @@ public class QtActivity extends Activity
                 return;
             }
 
-            // add all bundled libs to loader params
+	    // add all bundled libs to loader params
             ArrayList<String> libs = new ArrayList<String>();
+            /*
             if ( m_activityInfo.metaData.containsKey("android.app.bundled_libs_resource_id") )
                 libs.addAll(Arrays.asList(getResources().getStringArray(m_activityInfo.metaData.getInt("android.app.bundled_libs_resource_id"))));
+	    */
+	    {
+		Context		ctx	= this.getApplication().getApplicationContext();
+		String		dataDir = ctx.getApplicationInfo().dataDir;
+		FinderDir	fd	= new FinderDir(String.format("%s%c%s", 
+								      dataDir, 
+								      File.separatorChar,
+								      "lib"));
+		libs.addAll(fd.getOrderedDependencies());
+	    }
+	    
 
             if ( m_activityInfo.metaData.containsKey("android.app.lib_name") )
                 libs.add(m_activityInfo.metaData.getString("android.app.lib_name"));
@@ -152,10 +167,13 @@ public class QtActivity extends Activity
         } catch (Exception e) {
             e.printStackTrace();
             AlertDialog errorDialog = new AlertDialog.Builder(QtActivity.this).create();
-            if (m_activityInfo != null && m_activityInfo.metaData.containsKey("android.app.fatal_error_msg"))
+            if (m_activityInfo != null && m_activityInfo.metaData.containsKey("android.app.fatal_error_msg")) {
                 errorDialog.setMessage(m_activityInfo.metaData.getString("android.app.fatal_error_msg"));
-            else
+	    } else if (e instanceof FinderException) {
+                errorDialog.setMessage(Stirng.format(%s\n%s, "Fatal error: ", e.getMessage()));
+	    } else {
                 errorDialog.setMessage("Fatal error, your application can't be started.");
+	    }
             errorDialog.setButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
