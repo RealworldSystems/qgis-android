@@ -28,6 +28,7 @@
 package org.kde.necessitas.origo;
 
 import com.realworldsystems.android.lib.FinderDir;
+import com.realworldsystems.android.lib.FinderException;
 
 import java.io.File;
 import java.lang.reflect.Method;
