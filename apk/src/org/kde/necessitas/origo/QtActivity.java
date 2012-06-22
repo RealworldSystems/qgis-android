@@ -139,10 +139,16 @@ public class QtActivity extends Activity
 								      File.separatorChar,
 								      "lib"));
 		String[]        deps    = fd.getOrderedDependencies();
-		
+
+		// These libraries don't load well (relocation problems)
+		String[]        rem     = {"gsl"};
+
 		for(String dep:deps) {
 		    // String lib... and ...so
-		    libs.add(dep.substring(3, dep.length()-3));
+		    String	cut	 = dep.substring(3, dep.length()-3);
+		    boolean	dontload = false;
+		    for(String r:rem) { if(r.equals(dep)) { dontload = true; }}
+		    if(!dontload) { libs.add(cut); }
 		}
 	    }
 	    
