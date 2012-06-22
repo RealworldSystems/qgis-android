@@ -127,10 +127,6 @@ public class QtActivity extends Activity
 
 	    // add all bundled libs to loader params
             ArrayList<String> libs = new ArrayList<String>();
-            /*
-            if ( m_activityInfo.metaData.containsKey("android.app.bundled_libs_resource_id") )
-                libs.addAll(Arrays.asList(getResources().getStringArray(m_activityInfo.metaData.getInt("android.app.bundled_libs_resource_id"))));
-	    */
 	    {
 		Context		ctx	= this.getApplication().getApplicationContext();
 		String		dataDir = ctx.getApplicationInfo().dataDir;
@@ -152,10 +148,6 @@ public class QtActivity extends Activity
 		}
 	    }
 	    
-	    /*
-            if ( m_activityInfo.metaData.containsKey("android.app.lib_name") )
-                libs.add(m_activityInfo.metaData.getString("android.app.lib_name"));
-	    */
             loaderParams.putStringArrayList(BUNDLED_LIBRARIES_KEY, libs);
 
             // load and start QtLoader class
