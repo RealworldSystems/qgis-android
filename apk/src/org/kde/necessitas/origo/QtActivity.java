@@ -142,7 +142,7 @@ public class QtActivity extends Activity
 		
 		for(String dep:deps) {
 		    // String lib... and ...so
-		    libs.add(dep.substring(3, dep.length-3));
+		    libs.add(dep.substring(3, dep.length()-3));
 		}
 	    }
 	    
