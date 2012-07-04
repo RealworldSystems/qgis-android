@@ -125,16 +125,28 @@ public class QtActivity extends Activity
                 return;
             }
 
+            m_classLoader = new DexClassLoader(loaderParams.getString(DEX_PATH_KEY) // .jar/.apk files
+                                            , getDir("outdex", Context.MODE_PRIVATE).getAbsolutePath() // directory where optimized DEX files should be written.
+                                            , loaderParams.containsKey(LIB_PATH_KEY)?loaderParams.getString(LIB_PATH_KEY):null // libs folder (if exists)
+                                            , getClassLoader()); // parent loader
+
+
 	    // add all bundled libs to loader params
             ArrayList<String> libs = new ArrayList<String>();
-	    /*{
-		Context		ctx	= this.getApplication().getApplicationContext();
-		String		dataDir = ctx.getApplicationInfo().dataDir;
-		FinderDir	fd	= new FinderDir(String.format("%s%c%s", 
-								      dataDir, 
-								      File.separatorChar,
-								      "lib"));
-		String[]        deps    = fd.getOrderedDependencies();
+	    {
+		Context	ctx	= this.getApplication().getApplicationContext();
+		String	dataDir = ctx.getApplicationInfo().dataDir;
+
+		Class		finderDirClass = m_classLoader.loadClass("com.realworldsystems.android.lib.FinderDir");
+		Constructor	ctor	       = finderDirClass.getConstructor(String.class);
+		
+
+		Object	fd    = ctor.newInstance(String.format("%s%c%s", 
+							   dataDir, 
+							   File.separatorChar,
+							   "lib"));
+		Method	mthd  = finderDirClass.getClass().getMethod("getOrderedDependencies");
+		String[] deps = (String[])mthd.invoke(fd);
 
 		// These libraries don't load well (relocation problems)
 		String[]        rem     = {"gsl"};
@@ -146,15 +158,11 @@ public class QtActivity extends Activity
 		    for(String r:rem) { if(r.equals(cut)) { dontload = true; }}
 		    if(!dontload) { libs.add(cut); }
 		}
-		}*/
+	    }
 	    
             loaderParams.putStringArrayList(BUNDLED_LIBRARIES_KEY, libs);
 
             // load and start QtLoader class
-            m_classLoader = new DexClassLoader(loaderParams.getString(DEX_PATH_KEY) // .jar/.apk files
-                                            , getDir("outdex", Context.MODE_PRIVATE).getAbsolutePath() // directory where optimized DEX files should be written.
-                                            , loaderParams.containsKey(LIB_PATH_KEY)?loaderParams.getString(LIB_PATH_KEY):null // libs folder (if exists)
-                                            , getClassLoader()); // parent loader
 
             @SuppressWarnings("rawtypes")
             Class loaderClass = m_classLoader.loadClass(loaderParams.getString(LOADER_CLASS_NAME_KEY)); // load QtLoader class

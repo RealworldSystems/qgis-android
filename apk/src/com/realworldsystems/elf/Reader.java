@@ -120,9 +120,9 @@ public class Reader {
     public ELFHeader getELFHeader() throws ReaderException {
 	// Cache: Return cached elfHeader if present
 	if(this.elfHeader != null) return this.elfHeader;
-
+	FileInputStream fis;
 	try {
-	    FileInputStream fis = new FileInputStream(this.elfObject);
+	    fis = new FileInputStream(this.elfObject);
 	    ELFHeader header = new ELFHeader();
 	    
 	    byte[] elfMagic = new byte[16];
@@ -175,13 +175,13 @@ public class Reader {
 	    // Get the index of the section header string table (byte offset 50 and 51)
 	    header.shstrndx  = readShort(fis);
 
-	    fis.close();
-	    
 	    this.elfHeader = header;
 	} catch(ReaderException rex) {
 	    throw rex;  // Rethrow if this is already a ReaderException
 	} catch (Exception ex) {
 	    throw new ReaderException("Could not parse ELFHeader", ex);
+	} finally {
+	    fis.close();    
 	}
 	return this.elfHeader;
     }
@@ -276,9 +276,9 @@ public class Reader {
 	if(size < 8) throw new ReaderException("Can't allocate Program Header Entry Size");
 	
 	ProgramHeader.Entry entry = new ProgramHeader.Entry();
-
+	FileInputStream fis;
 	try {
-	    FileInputStream fis = new FileInputStream(elfObject);
+	    fis = new FileInputStream(elfObject);
 	    fis.skip(offset);
 	    
 	    entry.type	 = readInteger(fis);
@@ -290,14 +290,14 @@ public class Reader {
 	    entry.flags	 = readInteger(fis);
 	    entry.align	 = readInteger(fis);
 
-	    fis.close();
-	    
 	    if (entry.getType() == ProgramHeader.Entry.Type.DYNAMIC) {
 		entry.dynamic = readDynamic(entry.getOffset(), entry.getFileSZ());
 	    }
 	
 	} catch (Exception ex) {
 	    throw new ReaderException("Could not parse program header entry", ex);
+	} finally {
+	    fis.close();
 	}
 
 	return entry;
