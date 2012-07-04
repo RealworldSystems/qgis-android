@@ -127,7 +127,7 @@ public class QtActivity extends Activity
 
 	    // add all bundled libs to loader params
             ArrayList<String> libs = new ArrayList<String>();
-	    {
+	    /*{
 		Context		ctx	= this.getApplication().getApplicationContext();
 		String		dataDir = ctx.getApplicationInfo().dataDir;
 		FinderDir	fd	= new FinderDir(String.format("%s%c%s", 
@@ -146,7 +146,7 @@ public class QtActivity extends Activity
 		    for(String r:rem) { if(r.equals(cut)) { dontload = true; }}
 		    if(!dontload) { libs.add(cut); }
 		}
-	    }
+		}*/
 	    
             loaderParams.putStringArrayList(BUNDLED_LIBRARIES_KEY, libs);
 
