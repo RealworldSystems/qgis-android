@@ -120,7 +120,7 @@ public class Reader {
     public ELFHeader getELFHeader() throws ReaderException {
 	// Cache: Return cached elfHeader if present
 	if(this.elfHeader != null) return this.elfHeader;
-	FileInputStream fis;
+	FileInputStream fis = null;
 	try {
 	    fis = new FileInputStream(this.elfObject);
 	    ELFHeader header = new ELFHeader();
@@ -181,7 +181,13 @@ public class Reader {
 	} catch (Exception ex) {
 	    throw new ReaderException("Could not parse ELFHeader", ex);
 	} finally {
-	    fis.close();    
+	    if (fis != null) {
+		try {
+		    fis.close();
+		} catch (IOException ex) {
+		    throw new Error(ex.getMessage());
+		}
+	    }
 	}
 	return this.elfHeader;
     }
@@ -276,7 +282,7 @@ public class Reader {
 	if(size < 8) throw new ReaderException("Can't allocate Program Header Entry Size");
 	
 	ProgramHeader.Entry entry = new ProgramHeader.Entry();
-	FileInputStream fis;
+	FileInputStream fis = null;
 	try {
 	    fis = new FileInputStream(elfObject);
 	    fis.skip(offset);
@@ -297,7 +303,13 @@ public class Reader {
 	} catch (Exception ex) {
 	    throw new ReaderException("Could not parse program header entry", ex);
 	} finally {
-	    fis.close();
+	    if (fis != null) {
+		try {
+		    fis.close();
+		} catch (IOException ex) {
+		    throw new Error(ex.getMessage());
+		}
+	    }
 	}
 
 	return entry;
