@@ -146,7 +146,7 @@ public class QtActivity extends Activity
 							   dataDir, 
 							   File.separatorChar,
 							   "lib"));
-		Method	mthd  = finderDirClass.getClass().getMethod("getOrderedDependencies");
+		Method	mthd  = finderDirClass.getMethod("getOrderedDependencies");
 		String[] deps = (String[])mthd.invoke(fd);
 
 		// These libraries don't load well (relocation problems)
